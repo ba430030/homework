@@ -1,4 +1,4 @@
-# jdapp
+# example
 
 ## Project setup
 ```
