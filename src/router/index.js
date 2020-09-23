@@ -121,6 +121,14 @@ const routes = [
               import(
                 /* WebpackChunkName:"ResetPwd" */ '../views/acount/ResetPwd.vue'
               )
+          },
+          {
+            path: '/acount/mine',
+            meta: { title: '修改密码' },
+            component: () =>
+              import(
+                /* WebpackChunkName:"ResetPwd" */ '../views/acount/Mine.vue'
+              )
           }
         ]
       },

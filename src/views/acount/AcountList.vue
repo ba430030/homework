@@ -15,7 +15,9 @@
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column prop="name" label="账号" width="180"></el-table-column>
           <el-table-column prop="group" label="用户组" width="180"></el-table-column>
-          <el-table-column prop="date" label="创建时间" width="180"></el-table-column>
+          <el-table-column label="创建时间" width="180">
+            <template v-slot="{row}">{{row.date|getTime}}</template>
+          </el-table-column>
           <el-table-column label="操作">
             <template v-slot="{ row }">
               <el-button @click="editUser(row)" size="mini" type="primary">编辑</el-button>
@@ -63,6 +65,7 @@
 <script>
 import panel from '@/components/panel/Index.vue'
 import { getList, delAccount, batchdel, editAccount } from '@/api/acount.js'
+import { getTime } from '@/filters/getTime.js'
 
 export default {
   components: {
@@ -177,6 +180,9 @@ export default {
         this.dialogFormVisible = false
       }
     }
+  },
+  filters: {
+    getTime
   }
 }
 </script>

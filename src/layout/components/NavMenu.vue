@@ -45,6 +45,7 @@
       <el-menu-item index="/acount/acountlist">账号列表</el-menu-item>
       <el-menu-item index="/acount/acountadd">添加账号</el-menu-item>
       <el-menu-item index="/acount/resetpwd">修改密码</el-menu-item>
+      <el-menu-item index="/acount/mine">个人中心</el-menu-item>
     </el-submenu>
     <!-- 销售统计 -->
     <el-submenu index="/saleCount/GoodsCount">

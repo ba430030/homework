@@ -34,7 +34,9 @@
 
 <script>
 import panel from '@/components/panel/Index.vue'
-import { pwdReg } from '../../utils/validate.js'
+import { pwdReg } from '@/utils/validate.js'
+import { checkoldpwd, editpwd } from '@/api/acount.js'
+import local from '@/utils/local.js'
 
 export default {
   components: {
@@ -66,6 +68,20 @@ export default {
         callback()
       }
     }
+    var validateOldpass = async (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        const data = await checkoldpwd({
+          oldPwd: this.ruleForm.pass
+        })
+        if (data.code === '00') {
+          callback()
+        } else {
+          callback(new Error('原密码错误'))
+        }
+      }
+    }
 
     return {
       ruleForm: {
@@ -74,7 +90,7 @@ export default {
         checkNewpass: ''
       },
       rules: {
-        pass: [{ validator: validatePass, trigger: 'blur' }],
+        pass: [{ validator: validateOldpass, trigger: 'blur' }],
         newpass: [{ validator: validatePass, trigger: 'blur' }],
         checkNewpass: [{ validator: validatePass2, trigger: 'blur' }]
       }
@@ -82,14 +98,15 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.$message({
-            showClose: true,
-            message: '修改成功',
-            type: 'success',
-            duration: 1500
+          const data = await editpwd({
+            newPwd: this.ruleForm.newpass
           })
+          if (data.code === 0) {
+            local.remove('t_k')
+            this.$router.push('/login')
+          }
         } else {
           this.$message({
             showClose: true,

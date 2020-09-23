@@ -30,3 +30,23 @@ export function batchdel(ask) {
 export function editAccount(ask) {
   return request.post('/users/edit', ask)
 }
+
+/* 验证旧密码请求 */
+export function checkoldpwd(ask) {
+  return request.get('/users/checkoldpwd', ask)
+}
+
+/* 修改密码请求 */
+export function editpwd(ask) {
+  return request.post('/users/editpwd', ask)
+}
+
+/* 个人中心 */
+export function mineInfo(ask) {
+  return request.get('/users/info', ask)
+}
+
+/* 修改头像 */
+export function avataredit(ask) {
+  return request.get('/users/avataredit', ask)
+}
