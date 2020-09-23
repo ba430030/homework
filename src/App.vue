@@ -7,5 +7,6 @@
 <style lang="less">
 #app {
   height: 100%;
+  min-width: 980px;
 }
 </style>

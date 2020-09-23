@@ -12,12 +12,8 @@
     </el-aside>
     <el-container>
       <el-header class="header">
-        <!-- 面包屑导航 -->
-        <Breadcrumb />
-        <div class="user">
-          <span>欢迎你，张益达</span>
-          <img src="../assets/imgs/touxiang.jpg" />
-        </div>
+        <!-- 头部导航 -->
+        <Header />
       </el-header>
       <el-main>
         <!-- 展示路由 -->
@@ -29,11 +25,11 @@
 
 <script>
 import NavMenu from './components/NavMenu.vue'
-import Breadcrumb from './components/Breadcrumb.vue'
+import Header from './components/Header.vue'
 export default {
   components: {
     NavMenu,
-    Breadcrumb
+    Header
   },
   data() {
     return {
@@ -69,23 +65,10 @@ export default {
     }
   }
   .el-header {
-    background-color: skyblue;
+    background-color: #fff;
   }
   .el-main {
-    background-color: pink;
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    .user {
-      display: flex;
-      align-items: center;
-      img {
-        width: 40px;
-        border-radius: 50%;
-        margin-left: 10px;
-      }
-    }
+    background-color: #e4e4e4;
   }
 }
 </style>

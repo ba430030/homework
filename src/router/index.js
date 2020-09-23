@@ -1,8 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../layout/Index.vue'
+import local from '@/utils/local.js'
 
 Vue.use(VueRouter)
+
+/* 解决了点击同一导航触发报错 */
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 const routes = [
   {
@@ -20,11 +27,13 @@ const routes = [
       {
         path: '/order',
         redirect: '/order/ordercontent',
+        meta: { title: '订单管理' },
         component: () =>
           import(/* WebpackChunkName:"Order" */ '../views/order/Index.vue'),
         children: [
           {
             path: '/order/ordercontent',
+            meta: { title: '订单详情' },
             component: () =>
               import(
                 /* WebpackChunkName:"OrderContent" */ '../views/order/Order.vue'
@@ -35,11 +44,13 @@ const routes = [
       {
         path: '/product',
         redirect: '/product/productlist',
+        meta: { title: '商品管理' },
         component: () =>
           import(/* WebpackChunkName:"Product" */ '../views/product/Index.vue'),
         children: [
           {
             path: '/product/productlist',
+            meta: { title: '商品列表' },
             component: () =>
               import(
                 /* WebpackChunkName:"ProductList" */ '../views/product/ProductList.vue'
@@ -47,6 +58,7 @@ const routes = [
           },
           {
             path: '/product/productadd',
+            meta: { title: '商品添加' },
             component: () =>
               import(
                 /* WebpackChunkName:"ProductAdd" */ '../views/product/ProductAdd.vue'
@@ -54,6 +66,7 @@ const routes = [
           },
           {
             path: '/product/productcate',
+            meta: { title: '商品分类' },
             component: () =>
               import(
                 /* WebpackChunkName:"ProductCate" */ '../views/product/ProductCate.vue'
@@ -64,11 +77,13 @@ const routes = [
       {
         path: '/store',
         redirect: '/store/storecontent',
+        meta: { title: '店铺管理' },
         component: () =>
           import(/* WebpackChunkName:"Store" */ '../views/store/Index.vue'),
         children: [
           {
             path: '/store/storecontent',
+            meta: { title: '店铺详情' },
             component: () =>
               import(
                 /* WebpackChunkName:"StoreContent" */ '../views/store/Store.vue'
@@ -79,11 +94,13 @@ const routes = [
       {
         path: '/acount',
         redirect: '/acount/acountlist',
+        meta: { title: '账号管理' },
         component: () =>
           import(/* WebpackChunkName:"Acount" */ '../views/acount/Index.vue'),
         children: [
           {
             path: '/acount/acountlist',
+            meta: { title: '账号列表' },
             component: () =>
               import(
                 /* WebpackChunkName:"AcountList" */ '../views/acount/AcountList.vue'
@@ -91,6 +108,7 @@ const routes = [
           },
           {
             path: '/acount/acountadd',
+            meta: { title: '添加账号' },
             component: () =>
               import(
                 /* WebpackChunkName:"AcountAdd" */ '../views/acount/AcountAdd.vue'
@@ -98,6 +116,7 @@ const routes = [
           },
           {
             path: '/acount/resetpwd',
+            meta: { title: '修改密码' },
             component: () =>
               import(
                 /* WebpackChunkName:"ResetPwd" */ '../views/acount/ResetPwd.vue'
@@ -108,6 +127,7 @@ const routes = [
       {
         path: '/saleCount',
         redirect: '/saleCount/GoodsCount',
+        meta: { title: '销售统计' },
         component: () =>
           import(
             /* WebpackChunkName:"saleCount" */ '../views/saleCount/Index.vue'
@@ -115,6 +135,7 @@ const routes = [
         children: [
           {
             path: '/saleCount/GoodsCount',
+            meta: { title: '商品统计' },
             component: () =>
               import(
                 /* WebpackChunkName:"GoodsCount" */ '../views/saleCount/GoodsCount.vue'
@@ -122,6 +143,7 @@ const routes = [
           },
           {
             path: '/saleCount/OrderCount',
+            meta: { title: '订单统计' },
             component: () =>
               import(
                 /* WebpackChunkName:"OrderCount" */ '../views/saleCount/OrderCount.vue'
@@ -140,6 +162,17 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const token = local.get('t_k') || ''
+  if (token) {
+    next()
+  } else if (to.path === '/login') {
+    next()
+  } else {
+    next('/login')
+  }
 })
 
 export default router
